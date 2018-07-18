@@ -2,12 +2,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import physics.constant as con
+import physics.object as pb
 
-gravity = 5 # 设置重力加速度
 pole_length = 1.5 # 杆长
 mass = 1 # 摆球质量
 angular_v = 0. # 角速度
-dt = 0.02 # 最小时间间隔
 resistance = 0.01 # 阻尼系数
 
 fig, ax = plt.subplots(figsize = (5, 5))
@@ -24,8 +24,8 @@ def update(i):
     global mp, angular_v
     
     theta = 1j * (np.log(mp) - np.log(0 - pole_length * 1j)) # 偏移角度
-    a = gravity * np.cos(np.pi / 2 - theta) / mass # 切向加速度，牛顿第二定理
-    angular_v = (angular_v * pole_length + a * dt) / pole_length
+    a = con.gravity * np.cos(np.pi / 2 - theta) / mass # 切向加速度，牛顿第二定理
+    angular_v = (angular_v * pole_length + a * con.dt) / pole_length
     angular_v = angular_v * (1 - resistance)
 
     mp = mp * np.exp(angular_v * 1j)

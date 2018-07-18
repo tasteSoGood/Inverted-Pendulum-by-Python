@@ -47,3 +47,7 @@ def mouse_motion(event):
     pass
 fig.canvas.mpl_connect('motion_notify_event', mouse_motion)
 ```
+
+## 第三版：改变文件结构
+
+为了实现倒立摆，有必要从受力、物理实体等方面做一个通用的物理模拟系统，为此建立一个physics包。
