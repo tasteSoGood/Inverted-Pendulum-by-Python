@@ -82,50 +82,50 @@ class single_pendulum(thing):
         mass: 摆球的质量
         length: 摆杆的长度
         '''
-        # self.world = world
-        # self.mass = mass
-        # self.force = self.world.gravity
-        # self.length = length
-        # self.sp = pos
-        # self.mp = self.sp - 1j * self.length * np.exp(angle * 1j)
-        # self.body = [
-        #     self.world.ax.plot([self.sp.real, self.mp.real], [self.sp.imag, self.mp.imag], '-', lw = 1)[0],
-        #     self.world.ax.plot([self.sp.real], [self.sp.imag], 'bo')[0],
-        #     self.world.ax.plot([self.mp.real], [self.mp.imag], 'ro')[0]
-        # ]
-        # self.angular_v = 0.
-
         self.world = world
+        self.mass = mass
+        self.force = self.world.gravity
         self.length = length
-        self.angle = angle
         self.sp = pos
-        self.mp = ball(self.world, self.sp - 1j * self.length * np.exp(self.angle * 1j), mass = mass)
+        self.mp = self.sp - 1j * self.length * np.exp(angle * 1j)
         self.body = [
-            self.world.ax.plot([self.mp.pos.real, self.sp.real], [self.mp.pos.imag, self.sp.imag], '-', lw = 1)[0],
-            self.mp.body,
-            self.world.ax.plot([self.sp.real], [self.sp.imag], 'ro')[0]
+            self.world.ax.plot([self.sp.real, self.mp.real], [self.sp.imag, self.mp.imag], '-', lw = 1)[0],
+            self.world.ax.plot([self.mp.real], [self.mp.imag], 'ro')[0]
         ]
+        self.angular_v = 0.
+        
+        # self.world = world
+        # self.length = length
+        # self.angle = angle
+        # self.sp = pos
+        # self.mp = ball(self.world, self.sp - 1j * self.length * np.exp(self.angle * 1j), mass = mass)
+        # self.body = [
+        #     self.world.ax.plot([self.mp.pos.real, self.sp.real], [self.mp.pos.imag, self.sp.imag], '-', lw = 1)[0],
+        #     self.mp.body,
+        #     self.world.ax.plot([self.sp.real], [self.sp.imag], 'ro')[0]
+        # ]
     
     def motion(self, i):
-        # self.mp = self.mp - self.sp
-        # theta = 1j * (np.log(self.mp) - np.log(0 - self.length * 1j)) # 偏移角度
-        # a = np.abs(self.force) * np.cos(np.pi / 2 - theta) / self.mass # 切向加速度，牛顿第二定理
-        # self.angular_v = (self.angular_v * self.length + a * self.world.dt) / self.length
-        # self.mp = self.mp * np.exp(self.angular_v * 1j)
-        # self.mp = self.mp + self.sp
+        self.mp = self.mp - self.sp
+        theta = 1j * (np.log(self.mp) - np.log(0 - self.length * 1j)) # 偏移角度
+        a = np.abs(self.force) * np.cos(np.pi / 2 - theta) / self.mass # 切向加速度，牛顿第二定理
+        self.angular_v = (self.angular_v * self.length + a * self.world.dt) / self.length
+        self.mp = self.mp * np.exp(self.angular_v * 1j)
+        self.mp = self.mp + self.sp
 
-        # self.body[0].set_data([self.sp.real, self.mp.real], [self.sp.imag, self.mp.imag])
-        # self.body[1].set_data([self.sp.real], [self.sp.imag])
-        # self.body[2].set_data([self.mp.real], [self.mp.imag])
+        self.body[0].set_data([self.sp.real, self.mp.real], [self.sp.imag, self.mp.imag])
+        self.body[1].set_data([self.mp.real], [self.mp.imag])
         
-        t = self.sp - self.mp.pos
-        self.angle = np.arctan(t.real / t.imag)
-        self.mp.force = self.world.gravity * np.sin(self.angle) * np.exp(1j * (np.pi / 2 - self.angle)) # 受力分解
+        # t = self.sp - self.mp.pos
+        # self.angle = np.arctan(t.real / t.imag)
+        # f1 = (self.mp.mass * self.mp.volocity ** 2 / self.length) * np.exp(1j * np.pi / 2) # 向心力
+        # f2 = self.world.gravity * np.sin(self.angle) * np.exp(1j * (np.pi / 2 - self.angle)) # 切向力
+        # self.mp.force = f1 + f2
 
-        self.world.ax.scatter([self.mp.force.real], [self.mp.force.imag])
+        # # self.world.ax.scatter([self.mp.force.real], [self.mp.force.imag])
 
-        self.mp.motion(i)
+        # self.mp.motion(i)
 
-        self.body[0].set_data([self.mp.pos.real, self.sp.real], [self.mp.pos.imag, self.sp.imag])
-        self.body[1] = self.mp.body
-        self.body[2].set_data([self.sp.real], [self.sp.imag])
+        # self.body[0].set_data([self.mp.pos.real, self.sp.real], [self.mp.pos.imag, self.sp.imag])
+        # self.body[1] = self.mp.body
+        # self.body[2].set_data([self.sp.real], [self.sp.imag])

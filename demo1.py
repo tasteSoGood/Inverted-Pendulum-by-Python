@@ -7,9 +7,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    test = pobj.world(10, 10)
-    p = pobj.single_pendulum(test, 0j, length = 3)
-    test.register(p)
+    test = pobj.world(15, 15)
+    p1 = pobj.single_pendulum(test, 0j, length = 2)
+    p2 = pobj.single_pendulum(test, 0j, length = 3)
+    p3 = pobj.single_pendulum(test, 0j, length = 4)
+    p4 = pobj.single_pendulum(test, 0j, length = 5)
+    p5 = pobj.single_pendulum(test, 0j, length = 6)
+    test.register(p1)
+    test.register(p2)
+    test.register(p3)
+    test.register(p4)
+    test.register(p5)
     test.play()
 
     # def func(g, angle):
